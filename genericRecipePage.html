@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5.0">
+    <title>WhatsWhere</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+          apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+          authDomain: "auth.whatswhere.info",
+          databaseURL: "https://notwhatsinstock.firebaseio.com",
+          projectId: "notwhatsinstock",
+          storageBucket: "notwhatsinstock.appspot.com",
+          messagingSenderId: "1064647202473",
+          appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+          measurementId: "G-48Z6RCEC7S"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <link rel="stylesheet" href="loginbutton.css">
+    <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+<style>
+  /* Popup container - can be anything you want */
+  .popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark" role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+            
+        <div class="jumbotron text-center">
+            <h1 id="RecipeName">Recipe Name</h1>
+            <button type="button" class="btn btn-outline-success"onclick="addAllFoods()">Add all ingredients to shopping list</button>
+        </div>
+        <div class = "row">
+        <div class = "col-lg-6 col-md-6 col-sm-6">
+            <div class="row h-100" id="recipie-iframe-container">
+            </div>
+        </div>
+        <div id="Details" class = "col-lg-6 col-md-6 col-sm-6"></div>
+   
+        <script>
+            var database = firebase.database();
+            var urlParams;
+            (window.onpopstate = function () {
+            var match,
+                pl     = /\+/g,  // Regex for replacing addition symbol with a space
+                search = /([^&=]+)=?([^&]*)/g,
+                decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+                query  = window.location.search.substring(1);
+        
+            urlParams = {};
+            while (match = search.exec(query))
+               urlParams[decode(match[1])] = decode(match[2]);
+            })();
+        
+            var recipeID = urlParams.recipeID;
+            var recipeName= urlParams.recipeName;
+            var recipeImage = urlParams.recipeImage;
+            var recipeURL = urlParams.recipeURL;
+            
+            var ingredientsArr = [];
+            document.getElementById("recipie-iframe-container").innerHTML = `
+            <iframe id="recipieiframe" src="${recipeURL}" class="pl-5" style="width: 45vw; border:none;"></iframe>
+            `;
+                        
+            function httpGetPromise(url, method = "GET") {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.open(method, url);
+                xhr.onload = resolve;
+                xhr.onerror = reject;
+                xhr.send();
+            });
+        }
+            
+            
+            var html=''
+            
+            document.getElementById("RecipeName").innerHTML = recipeName;
+     
+
+            httpGetPromise(`https://api.spoonacular.com/recipes/${recipeID}/ingredientWidget.json?apiKey=4e6d53114ae54af0a78d3f4e631302cd&`).then(
+                function(e){
+                    console.log(e);
+                    JSON.parse(e.target.response).ingredients.forEach(element => {
+                        var img = `https://spoonacular.com/cdn/ingredients_500x500/${element.image}`;
+                        ingredientsArr.push(element.name);
+                        html+=`
+                        <div class="container-fluid">
+                        <div class="row">
+                        <div class="col-12 mt-3">
+                            <div class="card custom-card shadow">
+                            <div style="display: flex; flex: 1 1 auto;">
+                                <div class="img-square-wrapper" style="height: 180px; width: 300px;">
+                                <img class="" src="https://spoonacular.com/cdn/ingredients_500x500/${element.image}"
+                                    alt="Card image cap" style="max-height: 180px; max-width: 300px; height:auto; width:auto; display: block; margin-left: auto; margin-right: auto;">
+                                </div>
+                                <div class="card-body">
+                                <h4 class="card-title capitalize">${element.name}</h4>
+                                
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-right popup" style="float: right;">
+                                  <a class="btn btn-outline-success" href="genericFoodPage.html?name=${element.name}&url=${encodeURIComponent(img)}">
+            See stock
+          </a>
+                                <button type="button" class="btn btn-outline-success"onclick="addFood('${element.name}')">Add to shopping list</button>
+                                <span class="popuptext" id="${element.name}1">Added to shopping list</span>
+                                <span class="popuptext" id="${element.name}2">Please login to add to shopping list</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                        `;
+
+                    database.ref("/Foods/" + element.name).set({ 
+                        photo:"https://spoonacular.com/cdn/ingredients_500x500/"+element.image
+                    });
+                });
+                    
+                    document.getElementById("Details").innerHTML=html;
+                },
+                function(e){
+                    //error
+                    console.log("error :"+ e);
+                }
+            )
+    
+function addFood(food) {
+  try{
+  var user = firebase.auth().currentUser;
+  let itemNum = 0;
+  let foodNum = 0;
+  var userId = user.uid;
+  firebase.database().ref("/users/" + userId + "/itemCount/itemCount").once('value').then(function(snapshot) 
+  {
+      itemNum = snapshot.val();
+  });
+  firebase.database().ref("/users/" + userId + '/shoppingList/' + food + "/foodCount").once('value').then(function(snapshot) {
+      if(snapshot.val()!=null){
+          foodNum = snapshot.val();
+          console.log(foodNum);
+      }
+      else{
+          itemNum = itemNum + 1;
+      }
+      foodNum = foodNum + 1;
+      updateFood(foodNum, itemNum, userId, food);
+  });
+  var popup = document.getElementById(food+"1");
+  popup.classList.add("show");
+}
+catch(e)
+{
+  var popup = document.getElementById(food+"2");
+  popup.classList.add("show");
+}
+}
+function updateFood(foodNum, itemNum, userId, food)
+{   
+    console.log(foodNum)
+    firebase.database().ref("/users/" + userId + "/shoppingList/" + food).set({
+        foodCount: foodNum
+    });
+    firebase.database().ref("/users/" + userId + "/itemCount").set({
+        itemCount: itemNum
+    });
+}
+function addAllFoods(){
+    for(var i = 0; i<ingredientsArr.length; i++)
+    {
+        addFood(ingredientsArr[i]);
+    }
+}
+            </script>
+      </div>
+</body>
+</html>
+   

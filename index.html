@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+  <title>WhatsWhere</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5, shrink-to-fit=no">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+  <!--
+  <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css" crossorigin="anonymous">
+  -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc&callback=initMap&libraries=places&v=weekly"
+    defer>
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous" defer></script>
+  <script src="https://kit.fontawesome.com/844c0f9883.js" crossorigin="anonymous"></script> 
+  <script src="map.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+        authDomain: "auth.whatswhere.info",
+        databaseURL: "https://notwhatsinstock.firebaseio.com",
+        projectId: "notwhatsinstock",
+        storageBucket: "notwhatsinstock.appspot.com",
+        messagingSenderId: "1064647202473",
+        appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+        measurementId: "G-48Z6RCEC7S"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <link rel="stylesheet" href="loginbutton.css">
+  <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+
+<body class="h-100 d-flex flex-column">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark " role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid flex-fill d-flex">
+    <div class="row flex-fill">
+      <div class="col-lg-6 mt-3 d-flex">
+        <div class="scrollclass d-flex flex-column pb-3">
+          <div class="md-form shadow active-cyan-2 mt-3 mb-3 ml-5 mr-5 sticky-top">
+            <div id="cardlist" style="overflow-y:scroll; height: 85vh;">
+              <h3 class="text-center" id="allow-loc-services-text"></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="map-container-google-1" style="height: 85vh !important" class="z-depth-1-half map-container col-lg-6 col-12 mt-3 mb-3">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+  <title>WhatsWhere</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5, shrink-to-fit=no">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+  <!--
+  <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css" crossorigin="anonymous">
+  -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous" defer></script>
+  <script src="https://kit.fontawesome.com/844c0f9883.js" crossorigin="anonymous"></script> 
+  
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+        authDomain: "auth.whatswhere.info",
+        databaseURL: "https://notwhatsinstock.firebaseio.com",
+        projectId: "notwhatsinstock",
+        storageBucket: "notwhatsinstock.appspot.com",
+        messagingSenderId: "1064647202473",
+        appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+        measurementId: "G-48Z6RCEC7S"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <link rel="stylesheet" href="loginbutton.css">
+  <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+
+<body class="h-100 d-flex flex-column">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark " role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <h1 id="whatswhere">WhatsWhere</h1>
+  <p>We highly recommend you try out our app for yourself. Our app went live today (Friday, August 21st) and is ready to be used by real users and continually iterated on.</p>
+  <p>WhatsWhere seeks to enable its users to minimize their contact with others while shopping for essentials. All too often we have gone to stores for a product on sale only to find that it is out of stock. Even if you were willing to pay for convenience, you now need to drive to another store and expose yourself to a whole new set of people. This is obviously inconvenient, but in the times we live in, it could even be deadly.</p>
+  <h2 id="what-s-whatswhere-">What&#39;s WhatsWhere?</h2>
+  <p>The app simplifies grocery shopping by consolidating your shopping list to the fewest stores possible. This is accomplished through crowdsourced data that our users provide as a community in the demo, but this can just as easily leverage the inventory systems of stores that partner with us. Once our platform gains enough users, stores will be naturally incentivised to provide realtime inventory data.</p>
+  <p>There are four main features that WhatsWhere has available today, which we hope to augment with more updates in the future.</p>
+  <ul>
+  <li><p>Stock level data for nearby stores, with an interactive map to view stores in the area</p>
+  </li>
+  <li><p>A virtual shopping list that allows the user to determine the best store in the area to go to in order to get all of their items</p>
+  </li>
+  <li><p>A recipe browser for easily finding ingredients and adding them to your shopping list</p>
+  </li>
+  <li><p>Pages allowing the users to submit stock level data while at the store</p>
+  </li>
+  </ul>
+  <p>WhatsWhere also provides us insight into local consumer spending habits that can be used to better target other food-related products and services to communities. This data would likely become more valuable than the alternative monetization option of promoted stores.</p>
+  <a name="explainscore"><h2 id="what-s-the-whatswhere-score-">What&#39;s the WhatsWhere Score?</h2></a>
+  <p>The WhatsWhere score is a number from 0-100 that tells the user how desirable a store is based on their shopping list. A score of 100 means that a user can get their shopping list done with ease! The user won&#39;t have to worry about picking undesirable produce or fighting over the last bag of chips. We use our proprietary algorithm uses numerous factors to accurately calculate the desirability of each store for each and every user. Simply put, users can always find the store they should go to using the WhatsWhere score.</p>
+  <h2 id="why-whatswhere-">Why WhatsWhere?</h2>
+  <p>WhatsWhere was conceived as a means to minimize the contact the users have in public by minimizing their contact with others while shopping for essentials. To achieve this, our app allows a person who might have gone to many grocery stores to find the products they need can now confidently go to a single store and minimize their contact with others. This helps to achieve social distancing by ensuring that people are going to fewer stores, thereby reducing the number of people going to these essential stores that cannot close.</p>
+  <p>We were also inspired by the toilet paper shortages that struck when the pandemic first emerged. It occured because a few stores ran out of toilet paper, and those few intances being broadcasted in the media and creating panic. With our app, users can see when items are *actually* going out of stock and not become swept up in the panic caused by a few isolated cases of stores running out.</p>
+  <h2 id="how-did-we-build-it-">How did we build it?</h2>
+  <p>Our application requires no code running on our servers, instead leveraging the clients for all code execution which makes it possible to serve the pages entirely statically. This allows out app to be scalable and easily serve more clients with minimal changes to our infrastructure. This also allows for the location of the user to never need to leave their device, with us only handling data related to shopping lists of groceries. </p>
+  <p>We leverage Google&#39;s Firebase for a realtime shared database holding our data. This data is anonomized such that while everyone can submit entries to the database, other users cannot read other user&#39;s data, nor can we see where users are contributing to deduce their locations. This ensures data security of our platform, and allow the public to use our app trusting that we are not able to obtain data that could be considered sensitive.</p>
+  <p>The frontend is done almost entirely in Bootstrap 4, with some widgets such as the Google Sign-in button being done from scratch (which if nothing else, we&#39;re sure we will take away from this project to use in the future). The pages are designed to be responsive and adapt seamlessly to screen sizes from desktop down to mobile. </p>
+  <p>We collaborated over Visual Studio Code&#39;s Live Share extension and Discord, which we found well suited for having multiple people working on the same files simultaneously, and sharing a local webserver.</p>
+  <h2 id="the-future-of-whatswhere">The future of WhatsWhere</h2>
+  <p>We set out to make a product with utility that extends beyond the current pandemic situation we face. Even after the pandemic, our app will still be useful for those who want to be sure of the stock available at stores before they leave the house. With the rise of ecommerce, brick-and-mortar stores will have to leverage their advantage of customers being able to have product in hand without waiting for shipping. Arriving at a grocery store only to find a needed product out of stock damages the experience of stores, and our app is positioned to solve this issue.</p>
+  <p>We will, in the near future, integrate means of allowing stores to purchase a promoted position in the store listings to drive traffic. This would not change their scores and ensure that our app is still an imparital means of determining if the store has what users need. Additionally, once a region gains enough users, we can begin to monetize the platform. Local grocery stores will be charged a subscription fee to be featured on our app. Most stores in the area will be naturally incentivised to pay this fee as it is needed to stay competitive.</p>
+  <h2 id="the-team">The Team</h2>
+  <h4 id="dhyey-mehta">Dhyey Mehta</h4>
+  <p>In a sort of throw everything at the wall and see what sticks kind of way, Dhyey enjoys playing with different technologies that he has encountered through the years. Although not always the most knowledgeable at first, he strives to learn new things, is quick to adapt to use them, and improve his future projects with them. Combined with a healthy appreciation for teamwork and comedic relief, he is always ready to dive head-first into any project.</p>
+  <h4 id="ernest-wong">Ernest Wong</h4>
+  <p>Ernest is a kid at heart and is curious about everything. He’s always asking questions about his interests ranging from new technologies all the way to finance. Being quite involved with his community, he uses his love for learning to help others.</p>
+  <h4 id="george-shao">George Shao</h4>
+  <p>George is unafraid to take risks and seek new learning opportunities. He enjoys learning about fascinating new technologies, frameworks, and APIs, and employing them in his personal programming projects. In his spare time, George teaches elementary, high school, and university students about robotics and programming.</p>
+  <h4 id="sean-gordon">Sean Gordon</h4>
+  <p>Sean makes —but just as often breaks— things in his tech projects. He loves to work with the parts of projects users don&#39;t see: infrastructure, backends, and hardware that powers large projects. When the code breaks in an obscure manner and everything isn&#39;t working, Sean is the one that finds elegant solutions to otherwise complex problems. </p>
+  <h2 id="watch-the-pitch-">Watch the pitch!</h2>
+  <p><a href="https://www.youtube.com/watch?v=VIDEOIDHERE" title="WhatsWhere Pitch"><img src="https://img.youtube.com/vi/VIDEOIDHERE/0.jpg" alt="WhatsWhere Pitch"></a></p>
+  <h2 id="check-out-our-ad-">Check out our ad!</h2>
+  <p><a href="https://www.youtube.com/watch?v=p3___ZV61gM" title="WhatsWhere Ad"><img src="https://img.youtube.com/vi/p3___ZV61gM/0.jpg" alt="WhatsWhere Ad"></a></p>
+</body>
+</html>

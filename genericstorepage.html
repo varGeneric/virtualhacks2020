@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5.0">
+    <title>WhatsWhere</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+          apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+          authDomain: "auth.whatswhere.info",
+          databaseURL: "https://notwhatsinstock.firebaseio.com",
+          projectId: "notwhatsinstock",
+          storageBucket: "notwhatsinstock.appspot.com",
+          messagingSenderId: "1064647202473",
+          appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+          measurementId: "G-48Z6RCEC7S"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+<style>
+  /* Popup container - can be anything you want */
+  .popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark " role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+            
+        <div class="jumbotron text-center">
+            <h1 id="storeName">Store Name</h1>
+            <h2 id = "score">Here is your WhatsWhere Score:</h2>
+            <p><a href="/about.html#explainscore" target="_blank">Click to learn about the WhatsWhere score</a></p>
+            <p id="address">Address and directions...</p>
+        </div>
+        <div class = "row">
+        <div id="StoreImage" class = "col-lg-6 col-md-6 col-sm-6">
+            <img src="https://www.bnnbloomberg.ca/polopoly_fs/1.1431156!/fileimage/httpImage/image.png_gen/derivatives/landscape_620/longo-s-store-in-woodbridge-ont.png"  alt="Store Image">
+        </div>
+        <div class = "col-lg-6 col-md-6 col-sm-6">
+        <div id="Details" style="overflow:scroll; height:750px;" >
+        </div>
+        </div>
+        <script>
+          var _0x4fc7=['show','2\x22>Please\x20login\x20to\x20add\x20to\x20shopping\x20list</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20</div>\x0a\x20\x20</div>\x0a</div>\x0a','Add\x20items\x20to\x20your\x20shopping\x20list\x20to\x20see\x20the\x20What\x27s\x20Where\x20score','&destination_place_id=','length','\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20alt=\x22Card\x20image\x20cap\x22\x20style=\x22max-height:\x20180px;\x20max-width:\x20300px;\x20height:auto;\x20width:auto;\x20display:\x20block;\x20margin-left:\x20auto;\x20margin-right:\x20auto;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22card-body\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h4\x20class=\x22card-title\x20capitalize\x22>','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20See\x20other\x20stores\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</a>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22btn\x20btn-outline-success\x22onclick=\x22addFood(\x27','replace','then','toFixed','onpopstate','/itemCount','add','address','/foodCount','/users/','name','/itemCount/itemCount','/Foods','Fully\x20in\x20stock','currentUser','<a\x20href=\x22https://www.google.com/maps/dir/?api=1&destination=','vicinity','Here\x20is\x20the\x20What\x27s\x20Where\x20score:\x20','log','photo','place_id','storeName','Stores/','/Stores/','Sorry,\x20we\x20do\x20not\x20have\x20any\x20data\x20on\x20this\x20store\x20in\x20the\x20past\x2048\x20hours.\x20You\x20can\x20help\x20by\x20<a\x20href=\x27crowdsourcepage.html\x27>\x20submitting\x20a\x20report\x20</a>\x20of\x20the\x20stock\x20at\x20this\x20location.','val','innerHTML','exec','\x27)\x22>Add\x20to\x20shopping\x20list</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22popuptext\x22\x20id=\x22','key','A\x20few\x20left','score','substring','Plenty\x20available','database','Submissions','auth','\x0a<div\x20class=\x22container-fluid\x22>\x0a\x20\x20<div\x20class=\x22row\x22>\x0a\x20\x20\x20\x20<div\x20class=\x22col-12\x20mt-3\x22>\x0a\x20\x20\x20\x20\x20\x20<div\x20class=\x22card\x20custom-card\x20shadow\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22display:\x20flex;\x20flex:\x201\x201\x20auto;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22img-square-wrapper\x22\x20style=\x22width:\x20300px;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<img\x20class=\x22\x22\x20src=\x22','search','value','Out\x20of\x20stock','location','</h4>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22card-text\x22>Availability:\x20<b>','forEach','getElementById','Login\x20to\x20see\x20the\x20What\x27s\x20Where\x20score','includes','classList','once','ref','/shoppingList/','uid','Details','AVG'];(function(_0x42c553,_0x4fc758){var _0x8a82e2=function(_0x4da543){while(--_0x4da543){_0x42c553['push'](_0x42c553['shift']());}};_0x8a82e2(++_0x4fc758);}(_0x4fc7,0x17c));var _0x8a82=function(_0x42c553,_0x4fc758){_0x42c553=_0x42c553-0x0;var _0x8a82e2=_0x4fc7[_0x42c553];return _0x8a82e2;};var urlParams;(window[_0x8a82('0x32')]=function(){var _0x2ab449,_0x55ebfc=/\+/g,_0x55efa6=/([^&=]+)=?([^&]*)/g,_0x43648f=function(_0x5293ae){return decodeURIComponent(_0x5293ae[_0x8a82('0x2f')](_0x55ebfc,'\x20'));},_0x16c7e2=window[_0x8a82('0x1b')][_0x8a82('0x18')][_0x8a82('0x12')](0x1);urlParams={};while(_0x2ab449=_0x55efa6[_0x8a82('0xd')](_0x16c7e2))urlParams[_0x43648f(_0x2ab449[0x1])]=_0x43648f(_0x2ab449[0x2]);})();function updatePage(){document[_0x8a82('0x1e')](_0x8a82('0x7'))[_0x8a82('0xc')]=urlParams['name'],document[_0x8a82('0x1e')](_0x8a82('0x35'))[_0x8a82('0xc')]=_0x8a82('0x1')+encodeURIComponent(urlParams[_0x8a82('0x38')])+_0x8a82('0x2b')+urlParams[_0x8a82('0x6')]+'\x22>'+urlParams[_0x8a82('0x2')]+'</a>',document[_0x8a82('0x1e')]('StoreImage')[_0x8a82('0xc')]='<img\x20\x20style=\x22height:400px;\x20width:\x20600px;\x20margin:5%\x22src=\x22'+urlParams['url']+'\x22\x20class=\x22\x22\x20alt=\x22Store\x20Image\x22>';}function checkDB(){var _0x3aebf1=urlParams[_0x8a82('0x38')]+'\x20-\x20'+urlParams[_0x8a82('0x2')];firebase[_0x8a82('0x14')]()[_0x8a82('0x23')](_0x8a82('0x8')+_0x3aebf1)[_0x8a82('0x22')](_0x8a82('0x19'))[_0x8a82('0x30')](function(_0x427e03){_0x427e03[_0x8a82('0xb')]()==null?document[_0x8a82('0x1e')](_0x8a82('0x26'))[_0x8a82('0xc')]=_0x8a82('0xa'):updateFoodCards(_0x3aebf1);});}function updateFoodCards(_0x534765){try{var _0x319aae=firebase[_0x8a82('0x16')]()[_0x8a82('0x0')],_0x5ae481=_0x319aae['uid'],_0x2576da,_0x29ef8a;firebase[_0x8a82('0x14')]()['ref']('/users/'+_0x5ae481+'/shoppingList')['once'](_0x8a82('0x19'))['then'](function(_0x5234be){_0x29ef8a=_0x5234be[_0x8a82('0xb')](),firebase['database']()[_0x8a82('0x23')](_0x8a82('0x3a'))[_0x8a82('0x22')](_0x8a82('0x19'))[_0x8a82('0x30')](function(_0xa2c993){console[_0x8a82('0x4')](_0xa2c993['val']()),_0x2576da=_0xa2c993[_0x8a82('0xb')](),updateFoodCardsInner(_0x2576da,_0x534765,_0x29ef8a,_0x5ae481);});});}catch(_0x41d5d8){var _0x2576da,_0x29ef8a;firebase['database']()[_0x8a82('0x23')](_0x8a82('0x3a'))[_0x8a82('0x22')](_0x8a82('0x19'))[_0x8a82('0x30')](function(_0x52a5aa){console[_0x8a82('0x4')](_0x52a5aa[_0x8a82('0xb')]()),_0x2576da=_0x52a5aa[_0x8a82('0xb')](),updateFoodCardsInner(_0x2576da,_0x534765,_0x29ef8a,'na');});}}function updateFoodCardsInner(_0x4a528a,_0x39cc53,_0x432a70,_0x539fa1){var _0x3d1e10='';try{var _0x4197e1=Object['keys'](_0x432a70);}catch(_0xfadfeb){_0x4197e1=[];}console['log'](_0x4197e1);var _0x2004fb=0x0,_0x19b142=_0x4197e1[_0x8a82('0x2c')];firebase[_0x8a82('0x14')]()[_0x8a82('0x23')](_0x8a82('0x9')+_0x39cc53+'/Foods')['once'](_0x8a82('0x19'))[_0x8a82('0x30')](function(_0x568a9a){_0x568a9a[_0x8a82('0x1d')](function(_0x9c7985){if(!![]){var _0x28bd2c=_0x4a528a[_0x9c7985[_0x8a82('0xf')]][_0x8a82('0x5')],_0x3bdfb5=_0x9c7985[_0x8a82('0xb')]()[_0x8a82('0x15')][_0x8a82('0x27')],_0x17b8a1='';if(_0x3bdfb5<0xa)_0x17b8a1=_0x8a82('0x1a');else{if(_0x3bdfb5<0x14)_0x17b8a1=_0x8a82('0x10');else{if(_0x3bdfb5<0x1e)_0x17b8a1='A\x20good\x20amount\x20available';else _0x3bdfb5<0x28?_0x17b8a1=_0x8a82('0x13'):_0x17b8a1=_0x8a82('0x3b');}}_0x3d1e10+=_0x8a82('0x17')+_0x28bd2c+_0x8a82('0x2d')+_0x9c7985[_0x8a82('0xf')]+_0x8a82('0x1c')+_0x17b8a1+'</b></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22card-footer\x22>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22text-right\x20popup\x22\x20style=\x22float:\x20right;\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<a\x20class=\x22btn\x20btn-outline-success\x22\x20href=\x22genericFoodPage.html?name='+_0x9c7985['key']+'&url='+encodeURIComponent(_0x28bd2c)+_0x8a82('0x2e')+_0x9c7985[_0x8a82('0xf')]+_0x8a82('0xe')+_0x9c7985['key']+'1\x22>Added\x20to\x20shopping\x20list</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22popuptext\x22\x20id=\x22'+_0x9c7985[_0x8a82('0xf')]+_0x8a82('0x29'),console['log'](_0x3d1e10),document[_0x8a82('0x1e')](_0x8a82('0x26'))[_0x8a82('0xc')]=_0x3d1e10;}_0x4197e1[_0x8a82('0x20')](_0x9c7985['key'])&&(_0x2004fb+=_0x3bdfb5*0x2);}),console[_0x8a82('0x4')](_0x2004fb),console[_0x8a82('0x4')](_0x19b142),console['log'](_0x4197e1);if(_0x539fa1=='na')document[_0x8a82('0x1e')](_0x8a82('0x11'))['innerHTML']=_0x8a82('0x1f');else{if(_0x4197e1[_0x8a82('0x2c')]==0x0)document[_0x8a82('0x1e')](_0x8a82('0x11'))[_0x8a82('0xc')]=_0x8a82('0x2a');else _0x19b142==0x0?document[_0x8a82('0x1e')]('score')['innerHTML']='Here\x20is\x20the\x20What\x27s\x20Where\x20score:\x200':(_0x2004fb/_0x19b142>0x64&&(_0x2004fb=0x64,_0x19b142=0x1),document[_0x8a82('0x1e')](_0x8a82('0x11'))[_0x8a82('0xc')]=_0x8a82('0x3')+(_0x2004fb/_0x19b142)[_0x8a82('0x31')](0x2));}});}function addFood(_0x25bec5){try{var _0x13bce9=firebase[_0x8a82('0x16')]()[_0x8a82('0x0')];let _0x7d84bf=0x0,_0x24ec37=0x0;var _0x2d55a7=_0x13bce9[_0x8a82('0x25')];firebase[_0x8a82('0x14')]()[_0x8a82('0x23')]('/users/'+_0x2d55a7+_0x8a82('0x39'))[_0x8a82('0x22')](_0x8a82('0x19'))['then'](function(_0x27788f){_0x7d84bf=_0x27788f['val']();}),firebase[_0x8a82('0x14')]()[_0x8a82('0x23')](_0x8a82('0x37')+_0x2d55a7+_0x8a82('0x24')+_0x25bec5+_0x8a82('0x36'))['once'](_0x8a82('0x19'))[_0x8a82('0x30')](function(_0x55792c){_0x55792c[_0x8a82('0xb')]()!=null?(_0x24ec37=_0x55792c[_0x8a82('0xb')](),console[_0x8a82('0x4')](_0x24ec37)):_0x7d84bf=_0x7d84bf+0x1,_0x24ec37=_0x24ec37+0x1,updateFood(_0x24ec37,_0x7d84bf,_0x2d55a7,_0x25bec5);});var _0xf75678=document[_0x8a82('0x1e')](_0x25bec5+'1');_0xf75678[_0x8a82('0x21')][_0x8a82('0x34')](_0x8a82('0x28'));}catch(_0x45e0d5){var _0xf75678=document[_0x8a82('0x1e')](_0x25bec5+'2');_0xf75678[_0x8a82('0x21')][_0x8a82('0x34')](_0x8a82('0x28'));}}function updateFood(_0x197095,_0x27b8c2,_0x1600bd,_0x512c75){console['log'](_0x197095),firebase[_0x8a82('0x14')]()['ref'](_0x8a82('0x37')+_0x1600bd+_0x8a82('0x24')+_0x512c75)['set']({'foodCount':_0x197095}),firebase[_0x8a82('0x14')]()[_0x8a82('0x23')](_0x8a82('0x37')+_0x1600bd+_0x8a82('0x33'))['set']({'itemCount':_0x27b8c2});}setTimeout(checkDB,0xfa),updatePage();
+          eval(_0x4fc7);
+        </script>
+      </div>
+</body>
+</html>

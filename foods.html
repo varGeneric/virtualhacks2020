@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5.0">
+  <title>WhatsWhere</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="/loading.css">
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+      authDomain: "auth.whatswhere.info",
+      databaseURL: "https://notwhatsinstock.firebaseio.com",
+      projectId: "notwhatsinstock",
+      storageBucket: "notwhatsinstock.appspot.com",
+      messagingSenderId: "1064647202473",
+      appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+      measurementId: "G-48Z6RCEC7S"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+  <script type="text/javascript" src="foods.js"></script>
+  <link rel="stylesheet" href="loginbutton.css">
+  <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+<style>
+  /* Popup container - can be anything you want */
+  .popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item  active">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark" role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="jumbotron text-center  ">
+    <h1>Food Finder</h1>
+    <p>All your favorite foods in one place</p>
+  </div>
+
+
+  <div class="col-md-4 offset-md-4 mt-5">
+    <div class="input-group mb-3">
+      <input type="text" id = "search" class="form-control" placeholder="Search Foods..." aria-label="Recipient's username" autocomplete="off">
+            <button class="btn btn-success" type="button" onclick="updateFoodCardsSearch();">Search</button> 
+
+      <div class="input-group-append">
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="cards" style="overflow:scroll; height:750px;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 mt-3" id="recipe-cards" >
+          <div class="loader"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    
+  <!-- <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mt-3">
+        <div class="card custom-card shadow">
+          <div style="display: flex; flex: 1 1 auto;">
+            <div class="img-square-wrapper">
+              <img class="" src="https://ychef.files.bbci.co.uk/976x549/p07v2wjn.jpg"
+                alt="Card image cap" style="height: 180px; width: 300px;">
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Apple</h4>
+              <p class="card-text">Price: <b>$1</b></p>
+              <p class="card-text">Availability: <b>High</b></p>
+              
+            </div>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted" style="padding-right: 10px;">Tags:</small>
+            <button type="button" class="btn btn-outline-success btn-sm">Vegan</button>
+            <button type="button" class="btn btn-outline-success btn-sm">Healthy</button>
+            <div class="text-right" style="float: right;">
+              <button type="button" class="btn btn-outline-primary"onclick="addFood('apple')"id="appleAdd">Add to shopping list</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mt-3">
+        <div class="card custom-card shadow">
+          <div style="display: flex; flex: 1 1 auto;">
+            <div class="img-square-wrapper">
+              <img class="" src="https://cdn-prod.medicalnewstoday.com/content/images/hero/272/272782/272782_1100.jpg"
+                alt="Card image cap" style="height: 180px; width: 300px;">
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Orange</h4>
+              <p class="card-text">Price: <b>$1</b></p>
+              <p class="card-text">Availability: <b>High</b></p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted" style="padding-right: 10px;">Tags:</small>
+            <button type="button" class="btn btn-outline-success btn-sm">Vegan</button>
+            <button type="button" class="btn btn-outline-success btn-sm">Healthy</button>
+            <div class="text-right" style="float: right;">
+              <button type="button" class="btn btn-outline-primary" onclick="addFood('orange')"id="orangeAdd">Add to shopping list</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mt-3">
+        <div class="card custom-card shadow">
+          <div style="display: flex; flex: 1 1 auto;">
+            <div class="img-square-wrapper">
+              <img class="" src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimg1.cookinglight.timeinc.net%2Fsites%2Fdefault%2Ffiles%2Fstyles%2F4_3_horizontal_-_1200x900%2Fpublic%2Fimage%2F2015%2F08%2Fmain%2F1508w-grapes-getty_0.jpg%3Fitok%3D_vUbtJUc"
+                alt="Card image cap" style="height: 180px; width: 300px;">
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Grapes</h4>
+              <p class="card-text">Price: <b>$1</b></p>
+              <p class="card-text">Availability: <b>High</b></p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted" style="padding-right: 10px;">Tags:</small>
+            <button type="button" class="btn btn-outline-success btn-sm">Vegan</button>
+            <button type="button" class="btn btn-outline-success btn-sm">Healthy</button>
+            <div class="text-right" style="float: right;">
+              <button type="button" class="btn btn-outline-primary" id="grapesAdd" onclick="addFood('grapes')">Add to shopping list</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</body>
+
+</html>

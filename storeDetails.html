@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5.0">
+    <title>WhatsWhere</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+          apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+          authDomain: "auth.whatswhere.info",
+          databaseURL: "https://notwhatsinstock.firebaseio.com",
+          projectId: "notwhatsinstock",
+          storageBucket: "notwhatsinstock.appspot.com",
+          messagingSenderId: "1064647202473",
+          appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+          measurementId: "G-48Z6RCEC7S"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <link rel="stylesheet" href="loginbutton.css">
+    <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">WhatsWhere</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark" role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+        
+    <div class="jumbotron text-center">
+        <h1>Store Details</h1>
+        <p>Find great stores nearby with the groceries you need</p>
+    </div>
+    
+    <div class="col-md-4 offset-md-4 mt-5">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username">
+            <div class="input-group-append">
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-12 mt-3">
+              <div class="card custom-card shadow">
+                  <div style="display: flex; flex: 1 1 auto;">
+                      <div class="img-square-wrapper">
+                          <img src="https://www.supermarketnews.com/sites/supermarketnews.com/files/styles/article_featured_retina/public/Loblaws-supermarket-storefront.png" style="height: 180px; width: 300px;">
+                      </div>
+                      <div class="card-body">
+                          <h4 class="card-title">Loblaws</h4>
+                          <p class="card-text">10 min drive</p>
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                      <small class="text-muted" style="padding-right: 10px; float: left; height: 30px; line-height: 30px; text-align: center;">PROMOTED</small>
+                      <div class="text-right" style="float: right;">
+                        <button type="button" class="btn btn-outline-primary btn-sm icon-sq-button"><i class="fa fa-bookmark"></i></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+   
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5.0">
+    <title>WhatsWhere</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+          apiKey: "AIzaSyCiHfol2cwmJELs70oalCgdg94syFcM4nc",
+          authDomain: "auth.whatswhere.info",
+          databaseURL: "https://notwhatsinstock.firebaseio.com",
+          projectId: "notwhatsinstock",
+          storageBucket: "notwhatsinstock.appspot.com",
+          messagingSenderId: "1064647202473",
+          appId: "1:1064647202473:web:4d5130929846760a72fbb8",
+          measurementId: "G-48Z6RCEC7S"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <link rel="stylesheet" href="loginbutton.css">
+    <script type="text/javascript" src="loginflow.js" defer></script>
+</head>
+<style>
+  /* Popup container - can be anything you want */
+  .popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;} 
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-success">
+    <a class="navbar-brand" href="/">
+      <img src="/WhatsWhere_SK-03.svg" width="50" height="35" alt="">
+      <a class="navbar-brand" href="#">WhatsWhere</a>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Stores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/recipeFinder.html">Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/foods.html">Foods</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crowdsourcePage.html">Crowdsource</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shoppingList.html">Shopping List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item pr-3">
+          <div class="row">
+            <a id="google-login-button" class="btn btn-outline-dark " role="button" style="text-transform:none;">
+              <img style="width: 20px; padding-top:3px; margin-left:3px; margin-right:3px; float: left;" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+              <div class="logintext">Sign in with Google</div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+            
+        <div class="jumbotron text-center">
+            <h1 id="foodName" class="capitalize">Food Name</h1>
+        </div>
+        <div class = "row">
+        <div id="foodImage" class = "col-lg-6 col-md-6 col-sm-6">
+            <img src="https://www.bnnbloomberg.ca/polopoly_fs/1.1431156!/fileimage/httpImage/image.png_gen/derivatives/landscape_620/longo-s-store-in-woodbridge-ont.png"  alt="Food Image">
+        </div>
+        <div id="Details" style="overflow:scroll; height:750px;" class = "col-lg-6 col-md-6 col-sm-6"></div>
+        <script>
+            var urlParams;
+            (window.onpopstate = function () {
+                var match,
+                    pl     = /\+/g,  // Regex for replacing addition symbol with a space
+                    search = /([^&=]+)=?([^&]*)/g,
+                    decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+                    query  = window.location.search.substring(1);
+
+                urlParams = {};
+                while (match = search.exec(query))
+                urlParams[decode(match[1])] = decode(match[2]);
+            })();
+
+        document.getElementById("foodName").innerHTML = urlParams.name;
+        document.getElementById("foodImage").innerHTML = '<div class="img-square-wrapper" style="height: 400px; width: 600px; margin:5%"> <img  style="max-height:400px; max-width: 600px"src="'+urlParams.url+'" class="" alt="Food Image"> </div>';
+        
+        database = firebase.database();
+        html = "";
+        database.ref("/Foods/"+urlParams.name+"/Locations").once('value').then(function(snapshot){
+            if (snapshot.val()==null){
+                document.getElementById("Details").innerHTML = "<p>There is currently no data for this item recorded within the last 48 hours</p>"
+            }
+            else{
+                snapshot.forEach(function(childNodes){
+                var color;
+                var avail = childNodes.val().Submissions.AVG;
+
+                if (avail<10){color="#ff0000"}
+                else if(avail<20){color="#ff8000"}
+                else if(avail<30){color="#ffff00"}
+                else if(avail<40){color="#80ff00"}
+                else{color="#00ff00"}
+
+                avail*=2;
+                if (avail>100){avail = 100}
+
+                    html+=`<div class="card shadow ml-3 mr-3 mb-4">
+          <div class="d-flex">
+            <div class="card-body">
+              <h4 class="card-title" id="storecardname">${childNodes.key.split("-")[0]}</h4>
+              <h2 style="float:right;border-radius: 25px;padding: 20px;background:${color}; width:110px;text-align:center;">${avail}</h2>
+              <p class="card-text">
+                <i class="fa fa-directions"></i>
+                <a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${childNodes.key.split("-")[1]}"> ${childNodes.key.split("-")[1]} </a>
+              </p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="text-right" style="float: right;">
+              
+            </div>
+          </div>
+        </div>`
+        document.getElementById("Details").innerHTML = html;
+                });
+            }
+        });
+        
+        </script>
+      </div>
+</body>
+</html>
